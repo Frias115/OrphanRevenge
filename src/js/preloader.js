@@ -15,8 +15,8 @@
       this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
       this.load.setPreloadSprite(this.asset);
       this.load.image('player', 'assets/player.png');
-      this.load.tilemap('prueba', 'assets/Prueba.json', null, Phaser.Tilemap.TILED_JSON);
-      this.load.image('tiles-1','assets/verde.png')
+      this.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+      this.load.image('verde','assets/verde.jpg')
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
     },
 

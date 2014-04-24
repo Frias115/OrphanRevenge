@@ -13,13 +13,15 @@
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE); 
 
-      this.map = this.game.add.tilemap('prueba');
-      this.map.addTilesetImage('tiles-1');
+      this.map = this.game.add.tilemap('map');
+      this.map.addTilesetImage('verde');
+      this.map.setCollisionByExclusion([0]);
       this.layer = this.map.createLayer('Tile Layer 1');
+
       this.layer.resizeWorld();
 
 
-      this.game.physics.arcade.gravity.y = 200;
+      this.game.physics.arcade.gravity.y = 300;
 
       this.player = this.add.sprite(x, y, 'player');
       this.player.anchor.setTo(0.5, 0.5);
@@ -39,37 +41,33 @@
 
     update: function () {
 
+      this.game.physics.arcade.collide(this.player, this.layer);
+
       if (this.input.keyboard.isDown(Phaser.Keyboard.A))
       {
-        this.player.body.velocity.x = -200
+        this.player.body.velocity.x = -150
       }
       else if (this.input.keyboard.isDown(Phaser.Keyboard.D))
       {
-        this.player.body.velocity.x = 200
+        this.player.body.velocity.x = 150
       }
 
 
         // Set a variable that is true when the player is touching the ground
-      var onTheGround = this.player.body.touching.down;
-      if (onTheGround) this.canDoubleJump = true;
+      if (this.player.body.onFloor()) this.canDoubleJump = true;
 
       if (this.input.keyboard.justPressed(Phaser.Keyboard.W, 1)) {
       // Allow the player to adjust his jump height by holding the jump button
         if (this.canDoubleJump) this.canVariableJump = true;
 
-        if (this.canDoubleJump || onTheGround) {
+        if (this.canDoubleJump || this.player.body.onFloor()) {
             // Jump when the player is touching the ground or they can double jump
-            this.player.body.velocity.y = -340;
+            this.player.body.velocity.y = -230;
 
             // Disable ability to double jump if the player is jumping in the air
-            if (!onTheGround) this.canDoubleJump = false;
+            if (!this.player.body.onFloor()) this.canDoubleJump = false;
           }
         }
-
-    // Keep y velocity constant while the jump button is held for up to 400 ms
-    if (this.canVariableJump && this.input.keyboard.justPressed(Phaser.Keyboard.W, 400)) {
-      this.player.body.velocity.y = -340;
-    }
 
     // Don't allow variable jump height after the jump button is released
     if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
