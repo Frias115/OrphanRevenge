@@ -57,10 +57,10 @@
       if (this.player.body.onFloor()) this.canDoubleJump = true;
 
       if (this.input.keyboard.justPressed(Phaser.Keyboard.W, 1)) {
-      // Allow the player to adjust his jump height by holding the jump button
+        // Allow the player to adjust his jump height by holding the jump button
         if (this.canDoubleJump) this.canVariableJump = true;
 
-        if (this.canDoubleJump || this.player.body.onFloor()) {
+      if (this.canDoubleJump || this.player.body.onFloor()) {
             // Jump when the player is touching the ground or they can double jump
             this.player.body.velocity.y = -230;
 
@@ -69,10 +69,15 @@
           }
         }
 
-    // Don't allow variable jump height after the jump button is released
-    if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
-      this.canVariableJump = false;
-    }
+      // Don't allow variable jump height after the jump button is released
+      if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
+        this.canVariableJump = false;
+      }
+
+      if(this.player.body.onWall()){}
+
+
+
 
 
 
