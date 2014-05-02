@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="35" height="35" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="verde" tilewidth="32" tileheight="32">
-  <image source="verde.jpg" width="200" height="200"/>
+<map version="1.0" orientation="orthogonal" width="60" height="50" tilewidth="50" tileheight="25">
+ <tileset firstgid="1" name="platform" tilewidth="50" tileheight="25">
+  <image source="platform.png" width="353" height="75"/>
  </tileset>
- <layer name="Tile Layer 1" width="35" height="35">
+ <tileset firstgid="22" name="ground" tilewidth="50" tileheight="25">
+  <image source="ground.png" width="1922" height="122"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="60" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt11EKACAIREG7/6U7QbiQLUpvYL8zyLIIYK6VBOgqO7sVAeDl6EWl50/r3tak7o07CK9NePu61YO/VMyJzJtwcvyN1GxKsQB6
+   eJzt1EOTHVAUhdGOnWFsd2wbHXZ3bNu2bds2/mPW+E1evUGqU8n+qtbonDp1R7esLKWUUkoppZRSSimllFJKKf3t1aI2dahLPerToCYf9QdrSCMa04SmNKN5TT4qpfRPlP80/2lKKaWUUvo/akFLWtGaNrSlHe3pQEc60ZkudKUb3elBT3pRTm/60Jd+9GcAAxnEYIYwlGEMZwQjGcVoxhSZlXKncHcs4xjPBCYyiclMYSrTqGA6M5jJLGYzh0qqqGYu85jPAhayiMUsYSnLWM4KVrKK1axhLeuKzEq5U7i7ng1sZBOb2cJWtrGdHexkF7vZw172sZ8DHOQQhznCUY5xnBOc5BSnOcNZznGeC1zkEpe5UmRWyp3C3atc4zo3uMktbnOHu9zjPg94yCMe84SnPOM5L3jJK17zhre84z0f+MgnPvOFr3zjOz/4ya8is1LuFO7+BlAZYN8=
   </data>
  </layer>
 </map>

@@ -20,11 +20,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"platform.png",
+         "image":"Downloads\/plataforma boske 2.1.png",
          "imageheight":75,
          "imagewidth":353,
          "margin":0,
-         "name":"platform",
+         "name":"plataforma boske 2.1",
          "properties":
             {
 
@@ -35,7 +35,7 @@
         }, 
         {
          "firstgid":22,
-         "image":"ground.png",
+         "image":"Downloads\/ground.png",
          "imageheight":122,
          "imagewidth":1922,
          "margin":0,

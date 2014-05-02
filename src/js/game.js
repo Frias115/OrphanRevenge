@@ -12,19 +12,29 @@
     create: function () {
       var x = this.game.width / 2
       , y = this.game.height / 2;
+
+      
       //Inicio del sistema de fisicas
       this.game.physics.startSystem(Phaser.Physics.ARCADE); 
 
+      this.game.stage.backgroundColor = '#000000';
+
+      this.bg = this.game.add.tileSprite(0, 0, 1024, 768, 'background');
+      this.bg.fixedToCamera = true;
+      
+
       //Carga de mapa
       this.map = this.game.add.tilemap('map');
-      this.map.addTilesetImage('verde');
+      this.map.addTilesetImage('ground');
+      this.map.addTilesetImage('platform');
       this.map.setCollisionByExclusion([0]);
       this.layer = this.map.createLayer('Tile Layer 1');
       this.layer.resizeWorld();
 
       //Creacion de jugador
-      this.player = this.add.sprite(x, y, 'player');
+      this.player = this.add.sprite(100, 1000, 'player');
       this.player.anchor.setTo(0.5, 0.5);
+      this.player.health = 2
 
       //Creacion de Enemigos
       this.enemies = this.add.group();
@@ -32,13 +42,16 @@
       this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
       this.enemies.setAll('body.collideWorldBounds', true);
 
-        this.enemy=this.enemies.create(500,100, 'enemy');
+        this.enemy=this.enemies.create(800,600, 'enemy');
         this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(550,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(560,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(570,100, 'enemy');
+        this.enemy.body.velocity.x = -150
+        this.enemy1=this.enemies.create(1000,800, 'enemy');
+        this.enemy1.anchor.setTo(0.5,0.5);
+        this.enemy1.body.velocity.x = -150
+        this.enemy2=this.enemies.create(1500,100, 'enemy');
+        this.enemy2.anchor.setTo(0.5,0.5);
+        //this.enemy2.body.velocity.x = -150
+        /*this.enemy=this.enemies.create(570,100, 'enemy');
         this.enemy.anchor.setTo(0.5,0.5);
         this.enemy=this.enemies.create(580,100, 'enemy');
         this.enemy.anchor.setTo(0.5,0.5);
@@ -49,26 +62,30 @@
         this.enemy=this.enemies.create(550,100, 'enemy');
         this.enemy.anchor.setTo(0.5,0.5);
         this.enemy=this.enemies.create(550,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
+        this.enemy.anchor.setTo(0.5,0.5);*/
 
       //Creacion de la "caja" del arma, ataque principal
-      this.weapon = this.add.sprite(this.player.x+15,this.player.y,'weapon')
+      this.weapon = this.add.sprite(this.player.x+35,this.player.y-20,'')
       
       //Activa las fisicas en objetos
       this.game.physics.enable([this.enemy,this.player,this.weapon], Phaser.Physics.ARCADE);
 
       //Caracteristicas enemigos
-      this.player.body.gravity.y = 300;
       this.enemies.setAll('body.gravity.y', 300);
       this.enemies.setAll('body.collideWorldBounds', true);
 
       //Caracteristicas personaje
+      this.player.body.gravity.y = 300;
       this.player.body.drag.setTo(600, 0);
       this.player.body.collideWorldBounds = true;
+
+      this.player.animations.add('right', [1,2,3,4,5], 8, true);
+      this.player.animations.add('left', [1,2,3,4,5], 8, true);
 
       //Caracteristicas arma, ataque principal
       this.weapon.body.collideWorldBounds = true;
       this.weapon.body.drag.setTo(600, 0);
+      this.weapon.body.setSize(90,40,0,0)
 
       //Variables salto
       this.canDoubleJump = true
@@ -81,8 +98,8 @@
 
     update: function () {
       //Movimiento arma
-      this.weapon.x = this.player.x + 15
-      this.weapon.y = this.player.y - 5
+      
+      this.weapon.y = this.player.y - 20
 
       //Colisiones
       this.game.physics.arcade.collide(this.player, this.layer);
@@ -93,17 +110,49 @@
       //Movimiento personaje
       if (this.input.keyboard.isDown(Phaser.Keyboard.A))
       {
-        this.player.body.velocity.x = -150
+        this.player.body.setSize(133,145,0,0)
+        this.player.body.velocity.x = -150;
         this.weapon.body.velocity.x = -150
-        this.weapon.x = this.player.x - 115
-        this.weapon.y = this.player.y - 5
+        this.weapon.x = this.player.x - 125
+        this.weapon.y = this.player.y - 20
+        if (this.facing != 'left')
+        {
+            this.player.animations.play('left');
+            this.facing = 'left';
+        }
       }
       else if (this.input.keyboard.isDown(Phaser.Keyboard.D))
       {
-        this.player.body.velocity.x = 150
+        this.player.body.setSize(133,145,0,0)
+        this.player.body.velocity.x = 150;
         this.weapon.body.velocity.x = 150
-        this.weapon.x = this.player.x + 15
-        this.weapon.y = this.player.y - 5
+        this.weapon.x = this.player.x + 35
+        this.weapon.y = this.player.y - 20
+        if (this.facing != 'right')
+        {
+            this.player.animations.play('right');
+            this.facing = 'right';
+        }
+      }
+      else
+      {
+        if (this.facing != 'idle')
+        {
+            this.player.animations.stop();
+
+            if (this.facing == 'left')
+            {
+                this.player.body.setSize(90,145,0,0)
+                this.player.frame = 0;
+            }
+            else
+            {
+                this.player.body.setSize(90,145,0,0)
+                this.player.frame = 0;
+            }
+
+            this.facing = 'idle';
+        }
       }
 
       //Ataque principal
@@ -122,10 +171,10 @@
       if (this.input.keyboard.justPressed(Phaser.Keyboard.W, 1)) {
         // Allow the player to adjust his jump height by holding the jump button
         if (this.canDoubleJump) this.canVariableJump = true;
-        this.weapon.y = this.player.y - 5
+        
       if (this.canDoubleJump || this.player.body.onFloor()) {
             // Jump when the player is touching the ground or they can double jump
-            this.player.body.velocity.y = -230;
+            this.player.body.velocity.y = -350;
 
             // Disable ability to double jump if the player is jumping in the air
             if (!this.player.body.onFloor()) this.canDoubleJump = false;
@@ -136,7 +185,21 @@
       if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
         this.canVariableJump = false;
       }
-      //Posicion del "caja" ataque principal
+      
+      if (this.enemy.body.x <= 600){
+          this.enemy.body.velocity.x = +150
+      } else if (this.enemy.body.x >= 900){
+          this.enemy.body.velocity.x = -150
+      }
+
+      if (this.enemy1.body.x <= 0){
+        this.enemy1.body.velocity.x = +150
+      } else if (this.enemy1.body.x >= 1200){
+          this.enemy1.body.velocity.x = -150
+      }
+      
+
+
       
 
 
