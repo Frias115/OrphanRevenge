@@ -23,6 +23,7 @@
       this.load.image('ground','assets/ground.png')
       this.load.image('platform','assets/platform.png')
       this.load.image('background','assets/background.png')
+      this.load.audio('bgMusic', 'assets/backgroundMusic.mp3')
       this.load.bitmapFont('minecraftia', 'assets/minecraftia.png', 'assets/minecraftia.xml');
     },
 

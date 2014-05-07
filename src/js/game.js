@@ -31,6 +31,9 @@
       this.layer = this.map.createLayer('Tile Layer 1');
       this.layer.resizeWorld();
 
+      this.music = this.add.audio('bgMusic')
+      this.music.play('',0,1,true)
+
       //Creacion de jugador
       this.player = this.add.sprite(100, 1000, 'player');
       this.player.anchor.setTo(0.5, 0.5);
@@ -44,12 +47,11 @@
 
         this.enemy=this.enemies.create(800,600, 'enemy');
         this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy.body.velocity.x = -150
         this.enemy1=this.enemies.create(1000,800, 'enemy');
         this.enemy1.anchor.setTo(0.5,0.5);
         this.enemy1.body.velocity.x = -150
-        this.enemy2=this.enemies.create(1500,100, 'enemy');
-        this.enemy2.anchor.setTo(0.5,0.5);
+        this.boar=this.enemies.create(1500,100, 'enemy');
+        this.boar.anchor.setTo(0.5,0.5);
         //this.enemy2.body.velocity.x = -150
         /*this.enemy=this.enemies.create(570,100, 'enemy');
         this.enemy.anchor.setTo(0.5,0.5);
@@ -73,6 +75,7 @@
       //Caracteristicas enemigos
       this.enemies.setAll('body.gravity.y', 300);
       this.enemies.setAll('body.collideWorldBounds', true);
+      this.enemies.setAll('body.velocity.x', -150)
 
       //Caracteristicas personaje
       this.player.body.gravity.y = 300;
@@ -185,17 +188,13 @@
       if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
         this.canVariableJump = false;
       }
-      
-      if (this.enemy.body.x <= 600){
-          this.enemy.body.velocity.x = +150
-      } else if (this.enemy.body.x >= 900){
-          this.enemy.body.velocity.x = -150
-      }
 
-      if (this.enemy1.body.x <= 0){
-        this.enemy1.body.velocity.x = +150
-      } else if (this.enemy1.body.x >= 1200){
-          this.enemy1.body.velocity.x = -150
+      this.movement(this.boar, 1000, 2000)
+      this.movement(this.enemy, 600, 900)
+      this.movement(this.enemy1, 0, 1200)
+
+      if (this.player.body.x <= this.boar.body.x && this.player.body.x >= this.boar.body.x-5 ){
+        this.boar.body.velocity.x += 300
       }
       
 
@@ -239,6 +238,14 @@
 
       this.player.scale.x = scale * 0.6;
       this.player.scale.y = scale * 0.6;*/
+    },
+
+    movement: function (enemy, from, to) {
+      if (enemy.body.x <= from){
+          enemy.body.velocity.x = enemy.body.velocity.x * -1
+      } else if (enemy.body.x >= to){
+          enemy.body.velocity.x = enemy.body.velocity.x * -1
+      }
     },
 
     render: function () {
