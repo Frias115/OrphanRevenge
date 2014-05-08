@@ -31,6 +31,7 @@
       this.layer = this.map.createLayer('Tile Layer 1');
       this.layer.resizeWorld();
 
+      //Musica de fondo
       this.music = this.add.audio('bgMusic')
       this.music.play('',0,1,true)
 
@@ -193,11 +194,14 @@
       this.movement(this.enemy, 600, 900)
       this.movement(this.enemy1, 0, 1200)
 
-      if (this.player.body.x <= this.boar.body.x && this.player.body.x >= this.boar.body.x-5 ){
-        this.boar.body.velocity.x += 300
-      }
       
-
+      if(this.physics.arcade.distanceBetween(this.player, this.boar)<=500)
+      {  var t=this.game.time.now+1000;
+        if (this.game.time.now > t)
+        {
+            this.moveToObject(this.boar, this.player, 150, 500);
+        } 
+      }
 
       
 
@@ -253,7 +257,27 @@
       this.game.debug.body(this.enemies);
       this.game.debug.body(this.player);
       this.game.debug.body(this.weapon);
-    }
+    },
+
+    moveToObject: function (displayObject, destination, speed, maxTime) {
+
+        if (typeof speed === 'undefined') { speed = 60; }
+        if (typeof maxTime === 'undefined') { maxTime = 0; }
+
+        this._angle = Math.atan2(destination.y - displayObject.y, destination.x - displayObject.x);
+
+        if (maxTime > 0)
+        {
+            //  We know how many pixels we need to move, but how fast?
+            speed = this.physics.arcade.distanceBetween(displayObject, destination) / (maxTime / 1000);
+        }
+
+        displayObject.body.velocity.x = Math.cos(this._angle) * speed;
+        
+
+        return this._angle;
+
+    },
 
   };
 
