@@ -14,13 +14,10 @@
 
       this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
       this.load.setPreloadSprite(this.asset);
-      this.load.spritesheet('player', 'assets/run.png', 133, 145); //134,150 //69,75
-      this.load.spritesheet('playerRev', 'assets/runRev.png', 133, 145); //134,150 //69,75
-      //this.load.image('player', 'assets/player.png');
+      this.load.spritesheet('player', 'assets/runViejoBueno.png', 133, 145); //133,145
       this.load.image('enemy','assets/enemy.png');
       this.load.image('weapon','assets/weapon.png');
       this.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
-      //this.load.image('verde','assets/verde.jpg')
       this.load.image('ground','assets/ground.png')
       this.load.image('platform','assets/platform.png')
       this.load.image('background','assets/background.png')

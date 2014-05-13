@@ -4,7 +4,10 @@
   function Game() {
     this.player = null;
     this.enemy = null;
-    this.enemies = null;
+    this.rats = null;
+    this.boars = null;
+    this.timer = 0
+    this.t = 0
   }
 
   Game.prototype = {
@@ -41,42 +44,60 @@
       this.player.health = 2
 
       //Creacion de Enemigos
-      this.enemies = this.add.group();
-      this.enemies.enableBody = true;
-      this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
-      this.enemies.setAll('body.collideWorldBounds', true);
+      this.rats = this.add.group();
+      this.rats.enableBody = true;
+      this.rats.physicsBodyType = Phaser.Physics.ARCADE;
+      this.rats.setAll('body.collideWorldBounds', true);
 
-        this.enemy=this.enemies.create(800,600, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy1=this.enemies.create(1000,800, 'enemy');
-        this.enemy1.anchor.setTo(0.5,0.5);
-        this.enemy1.body.velocity.x = -150
-        this.boar=this.enemies.create(1500,100, 'enemy');
+        this.rat=this.rats.create(800,600, 'enemy');
+        this.rat.anchor.setTo(0.5,0.5);
+        this.rat1=this.rats.create(1000,800, 'enemy');
+        this.rat1.anchor.setTo(0.5,0.5);
+
+
+      this.boars = this.add.group();
+      this.boars.enableBody = true;
+      this.boars.physicsBodyType = Phaser.Physics.ARCADE;
+      this.boars.setAll('body.collideWorldBounds', true);
+
+        this.boar=this.boars.create(1500,100, 'enemy');
         this.boar.anchor.setTo(0.5,0.5);
-        //this.enemy2.body.velocity.x = -150
-        /*this.enemy=this.enemies.create(570,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(580,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(590,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(550,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(550,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);
-        this.enemy=this.enemies.create(550,100, 'enemy');
-        this.enemy.anchor.setTo(0.5,0.5);*/
+
+
+      this.crowns = this.add.group();
+      this.crowns.enableBody = true;
+      this.crowns.physicsBodyType = Phaser.Physics.ARCADE;
+      this.crowns.setAll('body.collideWorldBounds', true);
+
+        this.crown=this.crowns.create(1500,400, 'enemy');
+        this.crown.anchor.setTo(0.5,0.5);
+
+
+      this.spiders = this.add.group();
+      this.spiders.enableBody = true;
+      this.spiders.physicsBodyType = Phaser.Physics.ARCADE;
+      this.spiders.setAll('body.collideWorldBounds', true);
+
+        this.spider=this.spiders.create(1500,400, 'enemy');
+        this.spider.anchor.setTo(0.5,0.5);
 
       //Creacion de la "caja" del arma, ataque principal
       this.weapon = this.add.sprite(this.player.x+35,this.player.y-20,'')
       
       //Activa las fisicas en objetos
-      this.game.physics.enable([this.enemy,this.player,this.weapon], Phaser.Physics.ARCADE);
+      this.game.physics.enable([this.rats,this.boars,this.crowns,this.player,this.weapon], Phaser.Physics.ARCADE);
 
       //Caracteristicas enemigos
-      this.enemies.setAll('body.gravity.y', 300);
-      this.enemies.setAll('body.collideWorldBounds', true);
-      this.enemies.setAll('body.velocity.x', -150)
+      this.rats.setAll('body.gravity.y', 300);
+      this.rats.setAll('body.collideWorldBounds', true);
+      this.rats.setAll('body.velocity.x', -150)
+
+      this.boars.setAll('body.gravity.y', 300);
+      this.boars.setAll('body.collideWorldBounds', true);
+      this.boars.setAll('body.velocity.x', -150)
+
+      this.crowns.setAll('body.collideWorldBounds', true);
+      this.crowns.setAll('body.velocity.x', -150)
 
       //Caracteristicas personaje
       this.player.body.gravity.y = 300;
@@ -101,15 +122,19 @@
     },
 
     update: function () {
-      //Movimiento arma
-      
-      this.weapon.y = this.player.y - 20
-
       //Colisiones
+      this.game.physics.arcade.collide(this.rats, this.layer);
+      this.game.physics.arcade.collide(this.boars, this.layer);
+      this.game.physics.arcade.collide(this.crowns, this.layer);
+
       this.game.physics.arcade.collide(this.player, this.layer);
-      this.game.physics.arcade.collide(this.enemies, this.layer);
-      this.game.physics.arcade.collide(this.enemies, this.enemies);
-      this.game.physics.arcade.collide(this.player, this.enemies);
+
+      this.game.physics.arcade.overlap(this.player, this.rats);
+      this.game.physics.arcade.overlap(this.player, this.boars);
+      this.game.physics.arcade.overlap(this.player, this.crowns);
+
+      //Movimiento arma
+      this.weapon.y = this.player.y - 20
 
       //Movimiento personaje
       if (this.input.keyboard.isDown(Phaser.Keyboard.A))
@@ -162,7 +187,17 @@
       //Ataque principal
       if (this.input.keyboard.isDown(Phaser.Keyboard.K))
       {
-        this.physics.arcade.overlap(this.weapon, this.enemies, 
+        this.physics.arcade.overlap(this.weapon, this.rats, 
+        function (player, enemy) {
+              enemy.kill();
+        }, null, this);
+
+        this.physics.arcade.overlap(this.weapon, this.boars, 
+        function (player, enemy) {
+              enemy.kill();
+        }, null, this);
+
+        this.physics.arcade.overlap(this.weapon, this.crowns, 
         function (player, enemy) {
               enemy.kill();
         }, null, this);
@@ -189,22 +224,12 @@
       if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
         this.canVariableJump = false;
       }
-
-      this.movement(this.boar, 1000, 2000)
-      this.movement(this.enemy, 600, 900)
-      this.movement(this.enemy1, 0, 1200)
-
+      //Movimiento enemigos (Ver funcion)
+      this.movement(this.boar, 1000, 2000, -200, true, 500, false)
+      this.movement(this.rat, 600, 900, -150, false, 500, false)
+      this.movement(this.rat1, 2, 1200, -150, false, 500, false)
+      this.movement(this.crown, 2, 1200, -150, false, 100, true, 500, 600)
       
-      if(this.physics.arcade.distanceBetween(this.player, this.boar)<=500)
-      {  var t=this.game.time.now+1000;
-        if (this.game.time.now > t)
-        {
-            this.moveToObject(this.boar, this.player, 150, 500);
-        } 
-      }
-
-      
-
 
 
 
@@ -244,22 +269,60 @@
       this.player.scale.y = scale * 0.6;*/
     },
 
-    movement: function (enemy, from, to) {
-      if (enemy.body.x <= from){
-          enemy.body.velocity.x = enemy.body.velocity.x * -1
-      } else if (enemy.body.x >= to){
-          enemy.body.velocity.x = enemy.body.velocity.x * -1
+    movement: function (enemy, fromx, tox, vel, charge, distaceBW, flycharge, fromy, toy) {
+      if (enemy.body.x <= fromx){
+          enemy.body.velocity.x = (vel * -1)
+      } else if (enemy.body.x >= tox){
+          enemy.body.velocity.x = (vel)
+      }
+
+      if (charge === true){
+        if(this.physics.arcade.distanceBetween(this.player, enemy)<=distaceBW)
+        {  
+          if (this.game.time.now < this.t){
+            this.moveToObjectHM(enemy, this.player, 150, 500);
+          }
+        
+          if (this.game.time.now > this.timer){
+            this.t = this.game.time.now+500
+            this.timer = this.game.time.now+4000
+          }
+        }
+      }
+
+      if (flycharge === true){
+        if(this.physics.arcade.distanceBetween(this.player, enemy)<=distaceBW)
+        {  
+          if (this.game.time.now < this.t){
+            this.physics.arcade.moveToObject(enemy, this.player, 150, 500);
+          }
+        
+          if (this.game.time.now > this.timer){
+            this.t = this.game.time.now+500
+            this.timer = this.game.time.now+4000
+          }
+        }
+        
+        if (enemy.body.y <= fromy) {
+          enemy.body.velocity.x = (vel * -1)
+          enemy.body.velocity.y = 20
+        } else if (enemy.body.y >= toy){
+          enemy.body.velocity.x = (vel)
+          enemy.body.velocity.y = -20
+        }
       }
     },
 
     render: function () {
       
-      this.game.debug.body(this.enemies);
+      //this.game.debug.body(this.rat);
+      //this.game.debug.body(this.boar);
+      this.game.debug.body(this.crown);
       this.game.debug.body(this.player);
       this.game.debug.body(this.weapon);
     },
 
-    moveToObject: function (displayObject, destination, speed, maxTime) {
+    moveToObjectHM: function (displayObject, destination, speed, maxTime) {
 
         if (typeof speed === 'undefined') { speed = 60; }
         if (typeof maxTime === 'undefined') { maxTime = 0; }
