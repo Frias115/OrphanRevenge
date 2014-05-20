@@ -99,13 +99,21 @@
       this.crowns.setAll('body.collideWorldBounds', true);
       this.crowns.setAll('body.velocity.x', -150)
 
+      this.crowns.setAll('body.collideWorldBounds', true);
+
       //Caracteristicas personaje
       this.player.body.gravity.y = 300;
       this.player.body.drag.setTo(600, 0);
       this.player.body.collideWorldBounds = true;
 
-      this.player.animations.add('right', [1,2,3,4,5], 8, true);
-      this.player.animations.add('left', [1,2,3,4,5], 8, true);
+      this.player.animations.add('right', [1,2,3,4,5], 8, true)
+      this.player.animations.add('left', [6,7,8,9,10], 8, true)
+      this.player.animations.add('jumpR', [12,13,14,15,16], 8)
+      this.player.animations.add('jumpL', [29,28,27,26,25], 8)
+      this.player.animations.add('fallR', [17,18,19,20], 8)
+      this.player.animations.add('fallL', [24,23,22,21], 8)
+      this.player.animations.add('attackR', [30,31,32,33,34], 10)
+      this.player.animations.add('attackL', [39,38,37,36,35], 10)
 
       //Caracteristicas arma, ataque principal
       this.weapon.body.collideWorldBounds = true;
@@ -144,10 +152,12 @@
         this.weapon.body.velocity.x = -150
         this.weapon.x = this.player.x - 125
         this.weapon.y = this.player.y - 20
-        if (this.facing != 'left')
+        if (this.facing !== 'left')
         {
             this.player.animations.play('left');
             this.facing = 'left';
+            this.facingATT = 'left'
+            this.facingJ = 'left'
         }
       }
       else if (this.input.keyboard.isDown(Phaser.Keyboard.D))
@@ -157,27 +167,33 @@
         this.weapon.body.velocity.x = 150
         this.weapon.x = this.player.x + 35
         this.weapon.y = this.player.y - 20
-        if (this.facing != 'right')
+        if (this.facing !== 'right')
         {
             this.player.animations.play('right');
             this.facing = 'right';
+            this.facingATT = 'right'
+            this.facingJ = 'right'
         }
       }
       else
       {
-        if (this.facing != 'idle')
+        if (this.facing !== 'idle')
         {
             this.player.animations.stop();
 
-            if (this.facing == 'left')
+            if (this.facing === 'left')
             {
                 this.player.body.setSize(90,145,0,0)
-                this.player.frame = 0;
+                this.player.frame = 11;
+                this.facingATT = 'left'
+                this.facingJ = 'left'
             }
             else
             {
                 this.player.body.setSize(90,145,0,0)
                 this.player.frame = 0;
+                this.facingATT = 'right'
+                this.facingJ = 'right'
             }
 
             this.facing = 'idle';
@@ -187,20 +203,61 @@
       //Ataque principal
       if (this.input.keyboard.isDown(Phaser.Keyboard.K))
       {
-        this.physics.arcade.overlap(this.weapon, this.rats, 
-        function (player, enemy) {
-              enemy.kill();
-        }, null, this);
+        if (this.facingATT !== 'left')
+        {
+            this.player.animations.play('attackR');
+            this.facingATT = 'right'
+            this.checkATT = 'bleh'
+        } else if (this.facingATT !== 'right')
+        {
+            this.player.animations.play('attackL');
+            this.facingATT = 'left'
+            this.checkATT = 'bleh'
+        }
 
-        this.physics.arcade.overlap(this.weapon, this.boars, 
-        function (player, enemy) {
-              enemy.kill();
-        }, null, this);
+        if (this.player.animations.currentAnim._frameIndex >= 4)
+        {
+          this.physics.arcade.overlap(this.weapon, this.rats, 
+          function (player, enemy) {
+                enemy.kill();
+          }, null, this);
 
-        this.physics.arcade.overlap(this.weapon, this.crowns, 
-        function (player, enemy) {
-              enemy.kill();
-        }, null, this);
+          this.physics.arcade.overlap(this.weapon, this.boars, 
+          function (player, enemy) {
+                enemy.kill();
+          }, null, this);
+
+          this.physics.arcade.overlap(this.weapon, this.crowns, 
+          function (player, enemy) {
+                enemy.kill();
+          }, null, this);
+        }
+
+
+
+      }
+      else
+      {
+        if (this.checkATT !== 'idle')
+        {
+            this.player.animations.stop('attackL');
+            this.player.animations.stop('attackR');
+
+            if (this.facingATT === 'left')
+            {
+                this.player.body.setSize(90,145,0,0)
+                this.player.frame = 11;
+                this.facingATT = 'left'
+            }
+            else
+            {
+                this.player.body.setSize(90,145,0,0)
+                this.player.frame = 0;
+                this.facingATT = 'right'
+            }
+
+            this.checkATT = 'idle';
+        }
       }
 
       //Salto y doble salto
@@ -211,19 +268,61 @@
         // Allow the player to adjust his jump height by holding the jump button
         if (this.canDoubleJump) this.canVariableJump = true;
         
-      if (this.canDoubleJump || this.player.body.onFloor()) {
+        if (this.canDoubleJump || this.player.body.onFloor()) {
             // Jump when the player is touching the ground or they can double jump
             this.player.body.velocity.y = -350;
+            this.checkJ = 'jumping'
+
 
             // Disable ability to double jump if the player is jumping in the air
             if (!this.player.body.onFloor()) this.canDoubleJump = false;
-          }
         }
+      }
+      else if (this.checkJ === 'jumping')
+      {
+        if (this.facingJ !== 'left')
+        {
+        this.player.animations.play('jumpR');
+        this.facingJ = 'right'
+        this.checkJ = 'jumping'
+        } else if (this.facingATT !== 'right')
+        {
+        this.player.animations.play('jumpL');
+        this.facingJ = 'left'
+        this.checkJ = 'jumping'
+        }
+      }
+      else
+      {
+        if (this.checkJ !== 'idle')
+        {
+            this.player.animations.stop('jumpL');
+            this.player.animations.stop('jumpR');
+
+            if (this.facingJ === 'left')
+            {
+                this.player.body.setSize(90,145,0,0)
+                this.player.frame = 11;
+                this.facingJ = 'left'
+            }
+            else
+            {
+                this.player.body.setSize(90,145,0,0)
+                this.player.frame = 0;
+                this.facingJ = 'right'
+            }
+
+            this.checkJ = 'idle';
+        }
+      }
+
 
       // Don't allow variable jump height after the jump button is released
       if (!this.input.keyboard.isDown(Phaser.Keyboard.W)) {
         this.canVariableJump = false;
       }
+
+
       //Movimiento enemigos (Ver funcion)
       this.movement(this.boar, 1000, 2000, -200, true, 500, false)
       this.movement(this.rat, 600, 900, -150, false, 500, false)
@@ -323,9 +422,6 @@
     },
 
     moveToObjectHM: function (displayObject, destination, speed, maxTime) {
-
-        if (typeof speed === 'undefined') { speed = 60; }
-        if (typeof maxTime === 'undefined') { maxTime = 0; }
 
         this._angle = Math.atan2(destination.y - displayObject.y, destination.x - displayObject.x);
 

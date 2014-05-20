@@ -14,7 +14,7 @@
 
       this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
       this.load.setPreloadSprite(this.asset);
-      this.load.spritesheet('player', 'assets/runViejoBueno.png', 133, 145); //133,145
+      this.load.spritesheet('player', 'assets/player.png', 168, 145); //133,145
       this.load.image('enemy','assets/enemy.png');
       this.load.image('weapon','assets/weapon.png');
       this.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
