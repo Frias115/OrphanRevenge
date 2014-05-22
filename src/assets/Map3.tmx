@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="65" tilewidth="50" tileheight="25">
+ <tileset firstgid="1" name="ground" tilewidth="50" tileheight="25">
+  <image source="ground.png" width="1922" height="122"/>
+ </tileset>
+ <tileset firstgid="153" name="platform" tilewidth="50" tileheight="25">
+  <image source="platform.png" width="353" height="75"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="80" height="65">
+  <data encoding="base64" compression="zlib">
+   eJzt2tdPFFEYQPGxIrYIggXsiIrYJRbsXexdICpWsGJXbGDE3hVsK+rY+Ds9G8IDhMgazM4q5yS/18l3H27yZXKDwMzMzMzMzMzMzMzMzMzMzMzs360HeqIXeqMP+iIN/ZCO/hiAgRiEwZFMmppNxhQUYCoKMQ3TMQMzMQuzMQdzURTJpKnZZmzBVmzDduzATuzCbuzBXpSiDOWRTJqaXcQlXMYVXEUNruE6buAmbqEWdbjdyTc/IIaPaMInfMaXvz79/1mIr/iG7/iBn2iOcCazzvLed60w8N6bmZmZmZmZtc//DV0rDPzfYGZm9rviu0Z8v4jvGfF9Ixa4e/xJYdCya7Tn7tG9S/T9UOuu7/1qW6Lvh8Kg5b55v9qW6Psh67hE3w9Z920IMpCJochCNoZhOEZgJHKQi1EYjTEYi3EYjwnIw0TkY1ISzxBl8zAfC7AQxViExViCpViG5ViBlViF1ViDtViH9SjBBmzEpiSeIcr2YT8OoAIHcQiHcQRHcQyVqMJxnMBJnMJpnEE1zuIczuNCEs8QZXdQj7u4h/t4gId4hMd4gqd4hud4gZd4hddoQCPe4C3e4T1+AS6WYaA=
+  </data>
+ </layer>
+</map>

@@ -31,6 +31,7 @@
 
   window['orphan'] = window['orphan'] || {};
   window['orphan'].Boot = Boot;
+  window['orphan'].Global = {health: 3};
 
 }());
 

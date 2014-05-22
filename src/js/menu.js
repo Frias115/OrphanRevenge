@@ -30,6 +30,7 @@
     },
 
     onDown: function () {
+      window['orphan'].Global.health = 3;
       this.game.state.start('game');
     }
   };

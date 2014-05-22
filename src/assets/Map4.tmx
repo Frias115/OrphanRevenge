@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="80" height="50" tilewidth="50" tileheight="25">
+ <tileset firstgid="1" name="groundCity" tilewidth="50" tileheight="25">
+  <image source="groundCity.png" width="1922" height="165"/>
+ </tileset>
+ <tileset firstgid="229" name="platformCity" tilewidth="50" tileheight="25">
+  <image source="platformCity.png" width="279" height="57"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="80" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1+fXDnQYwHF7S4TKnoeMZJORkaxjlowoyt5ORiUjo5CyOfaubEJlHSMqIzt7xTEq/A19/oXu58Xt0fU95/P+d12vrl+aNFEURVEURVH05HeXe9znAX8l9zmprr/5h4c84nFynxNFURRFURRFT03xV0lZ8VeJoiiKov9W3B4pK26PKIqiKIqSXdxzKSvuuSiKoiiKoij6/5aWdKQnAxnJRGaykJVsZCcHOXmGXDxLbvLwHHnJR36e5wVepAAFKURhilCUYhSnBCUpRelUNkMZyvIS5ShPBSryMpV4hcpUoSrVqE4NalKL2rxKHepSj/q8RgMa0ojGvE4T3qApzWhOC1omsL9kztCK1rShLe1oz5u8RQfepiOd6EwX3qEr3XiX9+hOD97nA3rSi970oS/96M8ABjKIwQxhKMMS2F8yZ/iQ4YxgJKP4iI/5hNF8yhjGMo7xfMYEJjKJyXzOF0xhKtP4kul8xdfMYCazmM0c5jKP+SxIYH/JnGEhi1jMEpayjOWsYCWrWM0a1vIN3/Id61jPBjayic1sYSvb+J7t7GAnP/AjP7GL3exhL/sS2F8yZ9jPAQ5yiJ85zBF+4Vd+4yjHOM4JfuckpzjNGc5yjvP8wQUuconLXOEq17jODW5yiz+5zZ0E9pfMGf4FRrzX/w==
+  </data>
+ </layer>
+</map>

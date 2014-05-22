@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function Game() {
+  function GameBoss1() {
     this.player = null;
     this.enemy = null;
     this.rats = null;
@@ -10,7 +10,7 @@
     this.t = 0
   }
 
-  Game.prototype = {
+  GameBoss1.prototype = {
 
     create: function () {
       var x = this.game.width / 2
@@ -27,9 +27,8 @@
       
 
       //Carga de mapa
-      this.map = this.game.add.tilemap('map1');
-      this.map.addTilesetImage('ground');
-      this.map.addTilesetImage('platform');
+      this.map = this.game.add.tilemap('mapBoss1');
+      this.map.addTilesetImage('groundCity');
       this.map.setCollisionByExclusion([0]);
       this.layer = this.map.createLayer('Tile Layer 1');
       this.layer.resizeWorld();
@@ -39,8 +38,9 @@
       this.music.play('',0,0.5,true)
 
       //Creacion de jugador
-      this.player = this.add.sprite(100, 500, 'player');//100,500
+      this.player = this.add.sprite(100, 1000, 'player');
       this.player.anchor.setTo(0.5, 0.5);
+      this.player.health = 2
 
       //Creacion de Enemigos
       this.rats = this.add.group();
@@ -48,6 +48,10 @@
       this.rats.physicsBodyType = Phaser.Physics.ARCADE;
       this.rats.setAll('body.collideWorldBounds', true);
 
+        this.rat=this.rats.create(800,600, 'enemy');
+        this.rat.anchor.setTo(0.5,0.5);
+        this.rat1=this.rats.create(1000,800, 'enemy');
+        this.rat1.anchor.setTo(0.5,0.5);
 
 
       this.boars = this.add.group();
@@ -55,7 +59,7 @@
       this.boars.physicsBodyType = Phaser.Physics.ARCADE;
       this.boars.setAll('body.collideWorldBounds', true);
 
-        this.boar=this.boars.create(3650,1100, 'enemy');
+        this.boar=this.boars.create(1500,100, 'enemy');
         this.boar.anchor.setTo(0.5,0.5);
 
 
@@ -64,10 +68,8 @@
       this.crowns.physicsBodyType = Phaser.Physics.ARCADE;
       this.crowns.setAll('body.collideWorldBounds', true);
 
-        this.crown=this.crowns.create(2000,400, 'crown');
+        this.crown=this.crowns.create(1500,400, 'enemy');
         this.crown.anchor.setTo(0.5,0.5);
-        this.crown1=this.crowns.create(500,1100, 'crown');
-        this.crown1.anchor.setTo(0.5,0.5);
 
 
       this.spiders = this.add.group();
@@ -75,7 +77,8 @@
       this.spiders.physicsBodyType = Phaser.Physics.ARCADE;
       this.spiders.setAll('body.collideWorldBounds', true);
 
-
+        this.spider=this.spiders.create(1500,400, 'enemy');
+        this.spider.anchor.setTo(0.5,0.5);
 
       //Creacion de la "caja" del arma, ataque principal
       this.weapon = this.add.sprite(this.player.x+35,this.player.y-20,'')
@@ -85,18 +88,17 @@
 
       //Caracteristicas enemigos
       this.rats.setAll('body.gravity.y', 300);
+      this.rats.setAll('body.collideWorldBounds', true);
       this.rats.setAll('body.velocity.x', -150)
 
       this.boars.setAll('body.gravity.y', 300);
+      this.boars.setAll('body.collideWorldBounds', true);
       this.boars.setAll('body.velocity.x', -150)
 
+      this.crowns.setAll('body.collideWorldBounds', true);
       this.crowns.setAll('body.velocity.x', -150)
 
-
-      this.crown.animations.add('flyL', [8,7,6,5,4,3,2,1,0], 8, true)
-      this.crown.animations.add('flyR', [9,10,11,12,13,14,15,16,17], 8, true)
-      this.crown1.animations.add('flyL', [8,7,6,5,4,3,2,1,0], 8, true)
-      this.crown1.animations.add('flyR', [9,10,11,12,13,14,15,16,17], 8, true)
+      this.crowns.setAll('body.collideWorldBounds', true);
 
       //Caracteristicas personaje
       this.player.body.gravity.y = 300;
@@ -115,7 +117,7 @@
       //Caracteristicas arma, ataque principal
       this.weapon.body.collideWorldBounds = true;
       this.weapon.body.drag.setTo(600, 0);
-      this.weapon.body.setSize(50,90,0,0)
+      this.weapon.body.setSize(90,40,0,0)
 
       //Variables salto
       this.canDoubleJump = true
@@ -134,26 +136,12 @@
 
       this.game.physics.arcade.collide(this.player, this.layer);
 
-      this.game.physics.arcade.overlap(this.player, this.rats,
-        function (player, enemy) {
-                window['orphan'].Global.health = window['orphan'].Global.health -1
-          }, null, this)
-      this.game.physics.arcade.overlap(this.player, this.boars,
-        function (player, enemy) {
-                window['orphan'].Global.health = window['orphan'].Global.health -1
-          }, null, this)
-      this.game.physics.arcade.overlap(this.player, this.crowns,
-          function (player, enemy) {
-                window['orphan'].Global.health = window['orphan'].Global.health -1
-          }, null, this)
-
-      if(window['orphan'].Global.health === 0)
-      {
-       this.game.state.start('menu');
-      }
+      this.game.physics.arcade.overlap(this.player, this.rats);
+      this.game.physics.arcade.overlap(this.player, this.boars);
+      this.game.physics.arcade.overlap(this.player, this.crowns);
 
       //Movimiento arma
-      this.weapon.y = this.player.y - 40
+      this.weapon.y = this.player.y - 20
 
       //Movimiento personaje
       if (this.input.keyboard.isDown(Phaser.Keyboard.A))
@@ -161,8 +149,8 @@
         this.player.body.setSize(133,145,0,0)
         this.player.body.velocity.x = -150;
         this.weapon.body.velocity.x = -150
-        this.weapon.x = this.player.x - 85
-        this.weapon.y = this.player.y - 40
+        this.weapon.x = this.player.x - 125
+        this.weapon.y = this.player.y - 20
         if (this.facing !== 'left')
         {
             this.player.animations.play('left');
@@ -177,7 +165,7 @@
         this.player.body.velocity.x = 150;
         this.weapon.body.velocity.x = 150
         this.weapon.x = this.player.x + 35
-        this.weapon.y = this.player.y - 40
+        this.weapon.y = this.player.y - 20
         if (this.facing !== 'right')
         {
             this.player.animations.play('right');
@@ -210,11 +198,12 @@
             this.facing = 'idle';
         }
       }
-      console.log(this.player.animations.currentAnim._frameIndex)
+
       //Ataque principal
       if (this.input.keyboard.isDown(Phaser.Keyboard.K))
       {
-    
+        console.log(this.player.animations.currentAnim._frameIndex)
+
         this.checkATT = 'bleh'
 
       }
@@ -232,7 +221,7 @@
             this.checkATT = 'hue'
         }
 
-        if (this.player.animations.currentAnim._frameIndex >= 0)
+        if (this.player.animations.currentAnim._frameIndex >= 4)
         {
           this.physics.arcade.overlap(this.weapon, this.rats, 
           function (player, enemy) {
@@ -345,14 +334,14 @@
 
 
       //Movimiento enemigos (Ver funcion)
-      this.movement(this.boar, 2950, 3750, -200, true, 250, false)
-      this.movement(this.crown, 1500, 2500, -150, false, 250, true, 450, 650)
-      this.movement(this.crown1, 2, 1200, -150, false, 250, true, 1000, 1200)
+      this.movement(this.boar, 1000, 2000, -200, true, 500, false)
+      this.movement(this.rat, 600, 900, -150, false, 500, false)
+      this.movement(this.rat1, 2, 1200, -150, false, 500, false)
+      this.movement(this.crown, 2, 1200, -150, false, 100, true, 500, 600)
       
 
-      if (this.player.x >= 3750){
-        this.game.state.start('gameCity');
-      }
+
+
 
 
 
@@ -489,21 +478,76 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      /*var x, y, cx, cy, dx, dy, angle, scale;
+
+      x = this.input.position.x;
+      y = this.input.position.y;
+      cx = this.world.centerX;
+      cy = this.world.centerY;
+
+      angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI);
+      this.player.angle = angle;
+
+      dx = x - cx;
+      dy = y - cy;
+      scale = Math.sqrt(dx * dx + dy * dy) / 100;
+
+      this.player.scale.x = scale * 0.6;
+      this.player.scale.y = scale * 0.6;*/
     },
 
     movement: function (enemy, fromx, tox, vel, charge, distaceBW, flycharge, fromy, toy) {
       if (enemy.body.x <= fromx){
           enemy.body.velocity.x = (vel * -1)
-          if (flycharge === true)
-          {
-            enemy.animations.play('flyR');
-          }
       } else if (enemy.body.x >= tox){
           enemy.body.velocity.x = (vel)
-          if (flycharge === true)
-          {
-            enemy.animations.play('flyL');
-          }
       }
 
       if (charge === true){
@@ -521,7 +565,6 @@
       }
 
       if (flycharge === true){
-
         if(this.physics.arcade.distanceBetween(this.player, enemy)<=distaceBW)
         {  
           if (this.game.time.now < this.t){
@@ -537,17 +580,17 @@
         if (enemy.body.y <= fromy) {
           enemy.body.velocity.x = (vel * -1)
           enemy.body.velocity.y = 20
-          enemy.animations.play('flyR');
         } else if (enemy.body.y >= toy){
           enemy.body.velocity.x = (vel)
           enemy.body.velocity.y = -20
-          enemy.animations.play('flyL');
         }
       }
     },
 
     render: function () {
       
+      //this.game.debug.body(this.rat);
+      //this.game.debug.body(this.boar);
       this.game.debug.body(this.crown);
       this.game.debug.body(this.player);
       this.game.debug.body(this.weapon);
@@ -573,6 +616,6 @@
   };
 
   window['orphan'] = window['orphan'] || {};
-  window['orphan'].Game = Game;
+  window['orphan'].GameBoss1 = GameBoss1;
 
 }());

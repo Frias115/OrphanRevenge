@@ -1,16 +1,17 @@
 (function() {
   'use strict';
 
-  function Game() {
+  function GameCity() {
     this.player = null;
     this.enemy = null;
     this.rats = null;
     this.boars = null;
     this.timer = 0
     this.t = 0
+    this.relocate = true;
   }
 
-  Game.prototype = {
+  GameCity.prototype = {
 
     create: function () {
       var x = this.game.width / 2
@@ -27,9 +28,9 @@
       
 
       //Carga de mapa
-      this.map = this.game.add.tilemap('map1');
-      this.map.addTilesetImage('ground');
-      this.map.addTilesetImage('platform');
+      this.map = this.game.add.tilemap('map2');
+      this.map.addTilesetImage('groundCity');
+      this.map.addTilesetImage('platformCity');
       this.map.setCollisionByExclusion([0]);
       this.layer = this.map.createLayer('Tile Layer 1');
       this.layer.resizeWorld();
@@ -39,7 +40,7 @@
       this.music.play('',0,0.5,true)
 
       //Creacion de jugador
-      this.player = this.add.sprite(100, 500, 'player');//100,500
+      this.player = this.add.sprite(3659, 100, 'player');//100,500
       this.player.anchor.setTo(0.5, 0.5);
 
       //Creacion de Enemigos
@@ -55,8 +56,10 @@
       this.boars.physicsBodyType = Phaser.Physics.ARCADE;
       this.boars.setAll('body.collideWorldBounds', true);
 
-        this.boar=this.boars.create(3650,1100, 'enemy');
+        this.boar=this.boars.create(3100,1400, 'enemy');
         this.boar.anchor.setTo(0.5,0.5);
+        this.boar1=this.boars.create(1100, 1400, 'enemy');
+        this.boar1.anchor.setTo(0.5,0.5);
 
 
       this.crowns = this.add.group();
@@ -64,9 +67,9 @@
       this.crowns.physicsBodyType = Phaser.Physics.ARCADE;
       this.crowns.setAll('body.collideWorldBounds', true);
 
-        this.crown=this.crowns.create(2000,400, 'crown');
+        this.crown=this.crowns.create(3100,400, 'crown');
         this.crown.anchor.setTo(0.5,0.5);
-        this.crown1=this.crowns.create(500,1100, 'crown');
+        this.crown1=this.crowns.create(2000, 700, 'crown');
         this.crown1.anchor.setTo(0.5,0.5);
 
 
@@ -127,6 +130,12 @@
     },
 
     update: function () {
+      if (this.relocate === true){
+        this.player.x = -4000
+        this.player.y = 500
+        this.relocate = false
+      }
+
       //Colisiones
       this.game.physics.arcade.collide(this.rats, this.layer);
       this.game.physics.arcade.collide(this.boars, this.layer);
@@ -149,7 +158,7 @@
 
       if(window['orphan'].Global.health === 0)
       {
-       this.game.state.start('menu');
+        this.game.state.start('menu');
       }
 
       //Movimiento arma
@@ -345,14 +354,11 @@
 
 
       //Movimiento enemigos (Ver funcion)
-      this.movement(this.boar, 2950, 3750, -200, true, 250, false)
-      this.movement(this.crown, 1500, 2500, -150, false, 250, true, 450, 650)
-      this.movement(this.crown1, 2, 1200, -150, false, 250, true, 1000, 1200)
+      this.movement(this.boar, 2500, 3500, -200, true, 250, false)
+      this.movement(this.boar1, 800, 1500, -200, true, 250, false)
+      this.movement(this.crown, 2500, 3500, -150, false, 250, true, 350, 650)
+      this.movement(this.crown1, 1500, 2200, -150, false, 250, true, 600, 800)
       
-
-      if (this.player.x >= 3750){
-        this.game.state.start('gameCity');
-      }
 
 
 
@@ -573,6 +579,6 @@
   };
 
   window['orphan'] = window['orphan'] || {};
-  window['orphan'].Game = Game;
+  window['orphan'].GameCity = GameCity;
 
 }());
