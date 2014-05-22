@@ -36,11 +36,9 @@
       this.layer.resizeWorld();
 
       //Musica de fondo
-      this.music = this.add.audio('bgMusic')
-      this.music.play('',0,0.5,true)
 
       //Creacion de jugador
-      this.player = this.add.sprite(3659, 100, 'player');//100,500
+      this.player = this.add.sprite(0, 0, 'player');//100,500
       this.player.anchor.setTo(0.5, 0.5);
 
       //Creacion de Enemigos
@@ -120,6 +118,9 @@
       this.weapon.body.drag.setTo(600, 0);
       this.weapon.body.setSize(50,90,0,0)
 
+      this.healthTxt = this.add.bitmapText(20, 20, 'minecraftia', 'Health: ' );
+      this.healthTxt.fixedToCamera = true
+
       //Variables salto
       this.canDoubleJump = true
       this.canVariableJump = true
@@ -143,22 +144,40 @@
 
       this.game.physics.arcade.collide(this.player, this.layer);
 
+      if (this.invincibility === false)
+      {
       this.game.physics.arcade.overlap(this.player, this.rats,
         function (player, enemy) {
-                window['orphan'].Global.health = window['orphan'].Global.health -1
+                window['orphan'].Global.health -= 1
+                this.invincibility = true
+                this.invTimer = this.game.time.now + 1500
           }, null, this)
       this.game.physics.arcade.overlap(this.player, this.boars,
         function (player, enemy) {
-                window['orphan'].Global.health = window['orphan'].Global.health -1
+                window['orphan'].Global.health -= 1 
+                this.invincibility = true
+                this.invTimer = this.game.time.now + 1500
           }, null, this)
       this.game.physics.arcade.overlap(this.player, this.crowns,
           function (player, enemy) {
-                window['orphan'].Global.health = window['orphan'].Global.health -1
+                window['orphan'].Global.health -= 1
+                this.invincibility = true
+                this.invTimer = this.game.time.now + 1500
           }, null, this)
+      }
+      else
+      {
+        if (this.game.time.now > this.invTimer){
+          this.invincibility = false
+          this.invTimer = this.game.time.now + 1500
+        }
+      }
+
+      this.healthTxt.setText ('Health: ' + window['orphan'].Global.health)
 
       if(window['orphan'].Global.health === 0)
       {
-        this.game.state.start('menu');
+       this.game.state.start('menu');
       }
 
       //Movimiento arma

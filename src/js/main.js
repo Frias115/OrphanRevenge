@@ -11,6 +11,8 @@ window.onload = function () {
   game.state.add('game', ns.Game);
   game.state.add('gameCity', ns.GameCity);
   game.state.add('gameBoss1', ns.GameBoss1);
+  game.state.add('options', ns.Options);
+  game.state.add('credits', ns.Credits);
 
   game.state.start('boot');
 };

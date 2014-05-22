@@ -17,6 +17,10 @@
       this.load.spritesheet('player', 'assets/player.png', 168, 145); //133,145
       this.load.spritesheet('crown', 'assets/crown.png', 124, 145);
       this.load.image('enemy','assets/enemy.png')
+      this.load.image('menuBg','assets/menuBg.png')
+      this.load.image('startButton','assets/startButton.png')
+      this.load.image('optionsButton','assets/optionsButton.png')
+      this.load.image('creditsButton','assets/creditsButton.png')
       this.load.image('weapon','assets/weapon.png')
       this.load.tilemap('map1', 'assets/Map3.json', null, Phaser.Tilemap.TILED_JSON)
       this.load.tilemap('map2', 'assets/Map4.json', null, Phaser.Tilemap.TILED_JSON)
