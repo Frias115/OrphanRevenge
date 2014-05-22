@@ -21,7 +21,6 @@
       this.load.image('startButton','assets/startButton.png')
       this.load.image('optionsButton','assets/optionsButton.png')
       this.load.image('creditsButton','assets/creditsButton.png')
-      this.load.image('weapon','assets/weapon.png')
       this.load.tilemap('map1', 'assets/Map3.json', null, Phaser.Tilemap.TILED_JSON)
       this.load.tilemap('map2', 'assets/Map4.json', null, Phaser.Tilemap.TILED_JSON)
       this.load.tilemap('mapBoss1', 'assets/MapBoss1.json', null, Phaser.Tilemap.TILED_JSON)
