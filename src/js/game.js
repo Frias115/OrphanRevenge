@@ -181,9 +181,9 @@
       //Movimiento personaje
       if (this.input.keyboard.isDown(Phaser.Keyboard.A))
       {
-        this.player.body.setSize(133,145,0,0)
-        this.player.body.velocity.x = -150;
-        this.weapon.body.velocity.x = -150
+        this.player.body.setSize(103,145,0,0)
+        this.player.body.velocity.x = -200;
+        this.weapon.body.velocity.x = -200
         this.weapon.x = this.player.x - 85
         this.weapon.y = this.player.y - 40
         if (this.facing !== 'left')
@@ -196,9 +196,9 @@
       }
       else if (this.input.keyboard.isDown(Phaser.Keyboard.D))
       {
-        this.player.body.setSize(133,145,0,0)
-        this.player.body.velocity.x = 150;
-        this.weapon.body.velocity.x = 150
+        this.player.body.setSize(103,145,0,0)
+        this.player.body.velocity.x = 200;
+        this.weapon.body.velocity.x = 200
         this.weapon.x = this.player.x + 35
         this.weapon.y = this.player.y - 40
         if (this.facing !== 'right')
